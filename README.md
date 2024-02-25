@@ -6,6 +6,7 @@
 - [Installation](#installation)
 - [Technologies Used](#technologies-used)
 - [About](#about)
+- [Screenshots](#screenshots)
 
 ## Introduction
 
@@ -78,3 +79,13 @@ This application was developed by Ahmad Nouh. It demonstrates the implementation
 For any questions or feedback, please reach out to Ahmad Nouh at [ahmadnouh428@gmail.com].
 
 Enjoy searching for your favorite movies with ease using **IMDB Semantic Search**!
+
+## Screenshots
+### Home
+![alt Home](./screenshots/Home.png)
+
+### Data
+![alt Data](./screenshots/Data.png)
+
+### Search
+![alt Search](./screenshots/Search.png)
