@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "imdb_semantic_search"
+version = "0.1.0"
+description = ""
+authors = ["Ahmad Nouh <ahmadnouh428@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "1.31.1"
+pandas = "2.2.0"
+sentence-transformers = "2.3.1"
+chromadb = "^0.4.22"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
