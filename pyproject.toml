@@ -6,12 +6,11 @@ authors = ["Ahmad Nouh <ahmadnouh428@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 streamlit = "1.31.1"
 pandas = "2.2.0"
 sentence-transformers = "2.3.1"
-chromadb = "^0.4.22"
-pysqlite3-binary ="^0.5.2.post3"
+chromadb = "0.3.29"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.2"
