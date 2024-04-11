@@ -74,9 +74,9 @@ streamlit run 1_🏠_Home.py
 
 ## About
 
-This application was developed by Ahmad Nouh. It demonstrates the implementation of semantic search techniques for IMDb movies using Streamlit and ChromDB. Feel free to explore, modify, and use this application for learning and personal projects.
+This application was developed by [me](https://www.datascienceportfol.io/ahmad_nouh). It demonstrates the implementation of semantic search techniques for IMDb movies using Streamlit and ChromDB. Feel free to explore, modify, and use this application for learning and personal projects.
 
-For any questions or feedback, please reach out to Ahmad Nouh at [ahmadnouh428@gmail.com].
+If you have any questions or feedback, please don't hesitate to contact me via [email](ahmadnouh428@gmail.com).
 
 Enjoy searching for your favorite movies with ease using **IMDB Semantic Search**!
 
