@@ -11,29 +11,35 @@ data_dir = os.path.join("data")
 processed_dir = os.path.join(data_dir, "processed")
 index_dir = os.path.join(data_dir, "index")
 
-client = chromadb.PersistentClient(path=index_dir)
-
-collection = client.get_collection(
-    "imdb_movies",
-)
-
 st.set_page_config(
     page_title="Search Data",
     page_icon="🔍",
     layout="wide"
 )
 
+@st.cache_resource
+def get_collection():
+    client = chromadb.PersistentClient(path=index_dir)
+    return client.get_collection("imdb_movies")
+
+@st.cache_data
+def search(query: str):
+    return collection.query(
+        query_texts=[query],
+        n_results=5,
+        include=["documents", "distances", "metadatas"]
+    )
+
+
+collection = get_collection()
+
 st.title("Search Data 🔍")
 
 with st.container():
-    text_search = st.text_input("Write a query", value="a movie about two magicians who compete against each others")
-    if text_search:
+    query = st.text_input("Write a query", value="a movie about two magicians who compete against each others")
+    if query:
         with st.spinner("Wait for it..."):
-            result = collection.query(
-                query_texts=[text_search],
-                n_results=5,
-                include=["documents", "distances", "metadatas"]
-            )
+            result = search(query)
 
         documents = result.get("documents")[0]
         metadatas = result.get("metadatas")[0]

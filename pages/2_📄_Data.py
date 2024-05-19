@@ -13,6 +13,10 @@ st.set_page_config(
 
 st.title("Preview Data 📄")
 
+@st.cache_data
+def load_data():
+    return pd.read_csv(os.path.join(raw_dir, "imdb_movies.csv"), index_col=False)
+
 with st.container():
     with st.spinner():
-        st.dataframe(pd.read_csv(os.path.join(raw_dir, "imdb_movies.csv"), index_col=False))
+        st.dataframe(load_data())
