@@ -1,51 +1,44 @@
 import os
-# Use the bundled SQLite on Linux; Python supplies SQLite on other platforms.
-import sys
-if sys.platform.startswith('linux'):
-    __import__('pysqlite3')
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-import chromadb
+
+import numpy as np
+import pandas as pd
 import streamlit as st
+from sentence_transformers import SentenceTransformer
 
+from semantic_search import nearest_movies
 
-data_dir = os.path.join("data")
-processed_dir = os.path.join(data_dir, "processed")
-index_dir = os.path.join(data_dir, "index-v1")
+st.set_page_config(page_title="Search Data", page_icon="🔍", layout="wide")
 
-st.set_page_config(
-    page_title="Search Data",
-    page_icon="🔍",
-    layout="wide"
-)
 
 @st.cache_resource
-def get_collection():
-    client = chromadb.PersistentClient(path=index_dir)
-    return client.get_collection("imdb_movies")
+def load_search_data():
+    data = pd.read_csv(
+        os.path.join("data", "processed", "data.csv"),
+        converters={"vector": lambda value: np.fromstring(value[1:-1], sep=",", dtype=np.float32)},
+    )
+    vectors = np.asarray(data.pop("vector").tolist(), dtype=np.float32)
+    return data, vectors
+
+
+@st.cache_resource
+def load_model():
+    return SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
 
 @st.cache_data
-def search(query: str):
-    return collection.query(
-        query_texts=[query],
-        n_results=5,
-        include=["documents", "distances", "metadatas"]
-    )
+def search(query):
+    data, vectors = load_search_data()
+    query_vector = load_model().encode(query, normalize_embeddings=True)
+    return data.iloc[nearest_movies(vectors, query_vector)]
 
-
-collection = get_collection()
 
 st.title("Search Data 🔍")
-
 with st.container():
     query = st.text_input("Write a query", value="a movie about two magicians who compete against each others")
     if query:
         with st.spinner("Wait for it..."):
-            result = search(query)
-
-        documents = result.get("documents")[0]
-        metadatas = result.get("metadatas")[0]
-        
-        for document, metadata in zip(documents, metadatas):
-            st.markdown(f"## {document}")
-            st.text(metadata.get("overview"))
+            results = search(query)
+        for _, movie in results.iterrows():
+            st.markdown(f"## {movie['orig_title']}")
+            st.text(movie["overview"])
             st.divider()
