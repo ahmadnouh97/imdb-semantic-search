@@ -2,16 +2,17 @@ import os
 import ast
 import pandas as pd
 
-# override the old sqlite3
-__import__('pysqlite3')
+# Use the bundled SQLite on Linux; Python supplies SQLite on other platforms.
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+if sys.platform.startswith('linux'):
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
 
 
 data_dir = os.path.join("data")
 processed_dir = os.path.join(data_dir, "processed")
-index_dir = os.path.join(data_dir, "index")
+index_dir = os.path.join(data_dir, "index-v1")
 
 os.makedirs(index_dir, exist_ok=True)
 
@@ -27,9 +28,13 @@ collection = client.get_or_create_collection(
     "imdb_movies",
 )
 
-collection.add(
-    ids=[str(i) for i in list(range(1, len(data) + 1))],
-    embeddings=data["vector"].tolist(),
-    documents=data["orig_title"].tolist(),
-    metadatas=data.drop(columns=["vector"]).to_dict(orient="records")
-)
+# Chroma limits the number of records per request. Upsert makes reruns safe.
+batch_size = client.get_max_batch_size()
+for start in range(0, len(data), batch_size):
+    batch = data.iloc[start:start + batch_size]
+    collection.upsert(
+        ids=[str(i) for i in range(start + 1, start + len(batch) + 1)],
+        embeddings=batch["vector"].tolist(),
+        documents=batch["orig_title"].tolist(),
+        metadatas=batch.drop(columns=["vector"]).to_dict(orient="records")
+    )

@@ -1,15 +1,16 @@
 import os
-# override the old sqlite3
-__import__('pysqlite3')
+# Use the bundled SQLite on Linux; Python supplies SQLite on other platforms.
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+if sys.platform.startswith('linux'):
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
 import streamlit as st
 
 
 data_dir = os.path.join("data")
 processed_dir = os.path.join(data_dir, "processed")
-index_dir = os.path.join(data_dir, "index")
+index_dir = os.path.join(data_dir, "index-v1")
 
 st.set_page_config(
     page_title="Search Data",
