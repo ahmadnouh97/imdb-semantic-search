@@ -2,3 +2,4 @@
 .uv-cache
 data/index-v1/
 __pycache__/
+.hf-cache/

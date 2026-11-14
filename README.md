@@ -10,7 +10,7 @@
 
 ## Introduction
 
-Welcome to **IMDB Semantic Search**! This Streamlit application allows you to perform semantic searches on IMDb movies using a ChromDB (Vector Database). By leveraging semantic search techniques, you can find movies based on their meaning rather than just keywords.
+Welcome to **IMDB Semantic Search**! This Streamlit application allows you to perform semantic searches on IMDb movies using precomputed movie embeddings. By leveraging semantic search techniques, you can find movies based on their meaning rather than just keywords.
 
 ## Installation
 
@@ -49,12 +49,7 @@ poetry install
     source .venv/bin/activate # For Linux & Mac
     ```
 
-6. Build the Chroma 1.x index from the included processed data (required after upgrading from the old index) by running:
-    ```bash
-    python index.py
-    ```
-
-7. Run the Streamlit application:
+6. Run the Streamlit application (the embedding model downloads on first use):
 
 ```bash
 streamlit run 1_🏠_Home.py
@@ -65,16 +60,16 @@ streamlit run 1_🏠_Home.py
 
 - **Streamlit**: This application is built using Streamlit, a powerful framework for creating data-centric web applications with simple Python scripts.
 
-- **ChromDB (Vector Database)**: The semantic search functionality is powered by ChromDB, a vector database that enables efficient storage and retrieval of vectorized data. ChromDB utilizes Sentence Transformer, specifically the all-MiniLM-L6-v2 model, to calculate the embeddings of the data.
+- **NumPy**: The app ranks precomputed movie embeddings by squared Euclidean distance.
 
-- **Sentence Transformer (all-MiniLM-L6-v2 model)**: This model is employed within ChromDB to convert textual data into numerical vectors, facilitating semantic similarity calculations. It plays a crucial role in enabling effective semantic search capabilities within the application.
+- **Sentence Transformer (all-MiniLM-L6-v2 model)**: This model is used to convert textual data into numerical vectors, facilitating semantic similarity calculations. It plays a crucial role in enabling effective semantic search capabilities within the application.
 
 - **IMDb Dataset**: The application utilizes [IMDb dataset](https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset?resource=download) for movie information including names, genre, date, crew, and others.
 
 
 ## About
 
-This application was developed by [me](https://www.datascienceportfol.io/ahmad_nouh). It demonstrates the implementation of semantic search techniques for IMDb movies using Streamlit and ChromDB. Feel free to explore, modify, and use this application for learning and personal projects.
+This application was developed by [me](https://www.datascienceportfol.io/ahmad_nouh). It demonstrates the implementation of semantic search techniques for IMDb movies using Streamlit and sentence embeddings. Feel free to explore, modify, and use this application for learning and personal projects.
 
 If you have any questions or feedback, please don't hesitate to contact me via email [ahmadnouh428@gmail.com].
 
