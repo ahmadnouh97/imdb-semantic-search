@@ -28,10 +28,10 @@ git clone https://gitlab.com/ahmad-nouh/machine-learning/imdb-semantic-search.gi
 cd imdb-semantic-search
 ```
 
-3. Initialize your environment using Poetry:
+3. Install Python 3.11 and Poetry, then initialize your environment:
 
 ```bash
-poetry init
+poetry env use 3.11
 ```
 
 4. Install the required dependencies:
@@ -49,7 +49,7 @@ poetry install
     source .venv/bin/activate # For Linux & Mac
     ```
 
-6. Index data by running:
+6. Build the Chroma 1.x index from the included processed data (required after upgrading from the old index) by running:
     ```bash
     python index.py
     ```
